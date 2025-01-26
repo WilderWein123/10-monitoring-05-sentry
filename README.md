@@ -19,7 +19,14 @@ Free Cloud account имеет ограничения:
 
 > В качестве решения задания пришлите скриншот меню Projects.
 
-К сожалению, sentry.io выдает 403 при обращении
+К сожалению, sentry.io выдает 403 при обращении. В связи с чем будем поднимать в докере:
+
+```
+docker run -d --name sentry-postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=sentry postgres
+docker run -it --rm -e SENTRY_SECRET_KEY='y=#4s0iefhz#mx@1yvd=g5n*(#-r#%gt-_3prrzy%+%8b75f2a' --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade
+docker run -d --name my-sentry -e SENTRY_SECRET_KEY='y=#4s0iefhz#mx@1yvd=g5n*(#-r#%gt-_3prrzy%+%8b75f2a' --link sentry-redis:redis --link sentry-postgres:postgres sentry
+docker run -d -p9000:9000 --name my-sentry -e SENTRY_SECRET_KEY='y=#4s0iefhz#mx@1yvd=g5n*(#-r#%gt-_3prrzy%+%8b75f2a' --link sentry-redis:redis --link sentry-postgres:postgres sentry
+```
 
 <img src = "img/task1.jpg" width = 100%>
 
